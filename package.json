@@ -1,0 +1,24 @@
+{
+  "name": "sql-import-export",
+  "version": "1.0.0",
+  "description": "mysql and mysqldump CLI utils",
+  "main": "index.js",
+  "scripts": {
+    "test": "umysql"
+  },
+  "bin": {
+    "db": "index.js"
+  },
+  "keywords": [
+    "mysql",
+    "myslqdump"
+  ],
+  "author": "Titouan Mathis",
+  "license": "ISC",
+  "dependencies": {
+    "extend": "^3.0.0",
+    "inquirer": "^1.0.3",
+    "jsonfile": "^2.3.1",
+    "shelljs": "^0.7.0"
+  }
+}
