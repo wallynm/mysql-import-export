@@ -14,11 +14,20 @@
     "myslqdump"
   ],
   "author": "Titouan Mathis",
-  "license": "none",
+  "license": "MIT",
   "dependencies": {
     "extend": "^3.0.0",
     "inquirer": "^1.0.3",
     "jsonfile": "^2.3.1",
     "shelljs": "^0.7.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/titouanmathis/mysql-import-export.git"
+  },
+  "bugs": {
+    "url": "https://github.com/titouanmathis/mysql-import-export/issues"
+  },
+  "homepage": "https://github.com/titouanmathis/mysql-import-export#readme"
 }
