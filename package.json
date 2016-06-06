@@ -1,6 +1,6 @@
 {
   "name": "mysql-import-export",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A command line tool to easily import and export SQL database.",
   "main": "index.js",
   "scripts": {
