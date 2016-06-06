@@ -1,9 +1,9 @@
 {
   "type": "export",
-  "user": "titouan",
+  "user": "root",
   "password": "",
   "database": "",
   "path": "./",
-  "askForUser": false,
-  "askForPassword": false
+  "askForUser": true,
+  "askForPassword": true
 }
