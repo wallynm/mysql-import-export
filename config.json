@@ -3,7 +3,7 @@
   "user": "root",
   "password": "",
   "database": "",
-  "server": "localhost"
+  "server": "localhost",
   "path": "./",
   "askForUser": true,
   "askForPassword": true
