@@ -10,6 +10,8 @@ const extend = require('extend');
  * @param {object} proc The process object
  */
 function Database(args) {
+	let _ = this;
+	var def = require('./config.json');
 	this.defaults = require('./config.json');
 	this.args = args;
 
@@ -20,12 +22,12 @@ function Database(args) {
 		this.ask(method);
 		return this;
 	}
+				console.warn(this.args[0] === 'config')
 
 	// Update the config when the first arg is `config`
-	if (this.args.length && this.args[0] === 'config') {
-		const key = this.args[1];
-		const value = this.args[2];
-		this.config(key, value);
+	if (typeof this.args === 'object') {
+		let args = _.parseArgs(_.args);
+		shell.exec(`${args}`);
 	}
 
 	return this;
@@ -98,6 +100,14 @@ Database.prototype.ask = function(method) {
 			}
 		},
 		{
+			name: 'table',
+			message: 'Tables (separeted by spaces - Empty for all):',
+			default : _.defaults.table,
+			when: (data) => {
+				return data.type === 'export' || method === 'export';
+			},
+		},		
+		{
 			name: 'path',
 			message: 'Where is the file you want to import?',
 			required: true,
@@ -144,34 +154,13 @@ Database.prototype.ask = function(method) {
 
 			// Add a filename for export
 			let path = results.path;
-			if (!isImport && path.indexOf(".sql") == -1) {
+			if (!isImport && path.indexOf(".sql") === -1) {
 				path = path.substr(-1) === '/' ? path : path + '/';
 				path += results.database + '_' + getDate() + '.sql';
+				results.path = path;
 			}
 
-			// Did we ask for the user ?
-			// We take the default user if the
-			// question has been skipped
-			let user = results.user;
-
-			// Same for the password,
-			// is it in the results ?
-			let password = results.password;
-			let host = results.host;
-
-
-			let args = [
-				isImport ? 'mysql' : 'mysqldump',
-				`-u ${user}`,
-				password ? `-p${password}` : '',
-				`-h ${host}`,
-				isImport ? '' : '--single-transaction',
-				results.database,
-				isImport ? '<' : '>',
-				path
-			].join(' ');
-
-
+			let args = _.parseArgs(results);
 
 			inquirer.prompt([{
 				name: 'confirm',
@@ -182,7 +171,7 @@ ${args}
 ---------
 Do you confirm?`
 			}]).then(function(results) {
-				if (results.confirm) {
+				if (results.confirm) {					
 					shell.exec(`${args}`);
 				} else {
 					console.log('Abort.');
@@ -205,6 +194,21 @@ Do you confirm?`
 		return integer.toString().length === 1 ? `0${integer}` : integer;
 	}
 };
+
+Database.prototype.parseArgs = function(args) {
+	let isImport = args.type === 'import';
+	return [
+		isImport ? 'mysql' : 'mysqldump',
+		`-u ${args.user}`,
+		args.password ? `-p${args.password}` : '',
+		`-h ${args.host}`,
+		isImport ? '' : '--single-transaction',
+		args.database,
+		args.table,
+		isImport ? '<' : '>',
+		args.path
+	].join(' ');
+}
 
 
 

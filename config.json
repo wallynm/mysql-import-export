@@ -5,6 +5,7 @@
   "database": "",
   "host": "localhost",
   "path": "./",
+  "table": "",
   "askForUser": true,
   "askForPassword": true
 }
