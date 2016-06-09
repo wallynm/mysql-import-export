@@ -82,9 +82,9 @@ Database.prototype.ask = function(method) {
 			}
 		},
 		{
-			name: 'server',
-			message: 'Server:',
-			default : _.defaults.server
+			name: 'host',
+			message: 'Host:',
+			default : _.defaults.host
 		},		
 		{
 			name: 'database',
@@ -158,7 +158,7 @@ Database.prototype.ask = function(method) {
 				isImport ? 'mysql' : 'mysqldump',
 				`-u ${user}`,
 				password ? `-p${password}` : '',
-				`-h ${server}`,
+				`-h ${host}`,
 				results.database,
 				isImport ? '--single-transaction' : '',
 				isImport ? '<' : '>',
