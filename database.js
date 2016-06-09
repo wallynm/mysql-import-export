@@ -118,6 +118,10 @@ Database.prototype.ask = function(method) {
 			message: 'Where should the file be saved?',
 			default: '~/Desktop/',
 			validate: (value) => {
+				// Validate if contains default filename
+				if(value.indexOf(".sql") != -1)
+					return true;
+
 				// Test if folder exists
 				const testDir = shell.exec(`cd ${value}`, { silent: true });
 				return testDir.stderr ? 'Please, enter a valid folder path' : true;
@@ -140,7 +144,7 @@ Database.prototype.ask = function(method) {
 
 			// Add a filename for export
 			let path = results.path;
-			if (!isImport) {
+			if (!isImport && path.indexOf(".sql") == -1) {
 				path = path.substr(-1) === '/' ? path : path + '/';
 				path += results.database + '_' + getDate() + '.sql';
 			}
