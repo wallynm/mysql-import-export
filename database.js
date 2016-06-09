@@ -102,10 +102,7 @@ Database.prototype.ask = function(method) {
 		{
 			name: 'table',
 			message: 'Tables (separeted by spaces - Empty for all):',
-			default : _.defaults.table,
-			when: (data) => {
-				return data.type === 'export' || method === 'export';
-			},
+			default : _.defaults.table
 		},		
 		{
 			name: 'path',
