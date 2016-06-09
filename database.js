@@ -85,10 +85,10 @@ Database.prototype.ask = function(method) {
 			name: 'host',
 			message: 'Host:',
 			default : _.defaults.host
-		},		
+		},
 		{
 			name: 'database',
-			required: false,
+			required: true,
 			message: 'Database name:',
 			default: (data) => {
 				return data.user;
@@ -153,17 +153,21 @@ Database.prototype.ask = function(method) {
 			// Same for the password,
 			// is it in the results ?
 			let password = results.password;
+			let host = results.host;
+
 
 			let args = [
 				isImport ? 'mysql' : 'mysqldump',
 				`-u ${user}`,
 				password ? `-p${password}` : '',
 				`-h ${host}`,
+				isImport ? '' : '--single-transaction',
 				results.database,
-				isImport ? '--single-transaction' : '',
 				isImport ? '<' : '>',
 				path
 			].join(' ');
+
+
 
 			inquirer.prompt([{
 				name: 'confirm',
