@@ -82,8 +82,13 @@ Database.prototype.ask = function(method) {
 			}
 		},
 		{
+			name: 'server',
+			message: 'Server:',
+			default : _.defaults.server
+		},		
+		{
 			name: 'database',
-			required: true,
+			required: false,
 			message: 'Database name:',
 			default: (data) => {
 				return data.user;
@@ -151,11 +156,11 @@ Database.prototype.ask = function(method) {
 
 			let args = [
 				isImport ? 'mysql' : 'mysqldump',
-				'-v',
 				`-u ${user}`,
 				password ? `-p${password}` : '',
-				'-h localhost',
+				`-h ${server}`,
 				results.database,
+				isImport ? '--single-transaction' : '',
 				isImport ? '<' : '>',
 				path
 			].join(' ');
