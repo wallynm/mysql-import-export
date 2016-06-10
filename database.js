@@ -101,12 +101,23 @@ Database.prototype.ask = function(method) {
 		{
 			name: 'table',
 			message: 'Tables (separeted by spaces - Empty for all):',
-			default : _.defaults.table
+			default : _.defaults.table,
+			when: (data) => {
+				return data.type === 'export' || method === 'export';
+			}
 		},
 		{
 			name: 'force',
 			message: 'Ignore errors:',
-			default : _.defaults.table
+			default : _.defaults.force
+		},
+		{
+			name: 'silent',
+			message: 'Surpress errors:',
+			default : _.defaults.silent,
+			when: (data) => {
+				return data.type === 'import' || method === 'import';
+			}
 		},
 		{
 			name: 'path',
@@ -198,13 +209,18 @@ Do you confirm?`
 
 Database.prototype.parseArgs = function(args) {
 	let isImport = args.type === 'import';
+
+	if(!isImport){
+		args.silent = false;
+	}
 	return [
 		isImport ? 'mysql' : 'mysqldump',
 		`-u ${args.user}`,
 		args.password ? `-p${args.password}` : '',
 		`-h ${args.host}`,
-		isImport ? '' : '--single-transaction',
 		args.force ? '-f' : '',
+		isImport ? '' : '--single-transaction',
+		args.silent ? '--silent': '',
 		args.database,
 		args.table,
 		isImport ? '<' : '>',
