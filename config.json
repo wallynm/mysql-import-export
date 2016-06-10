@@ -7,5 +7,6 @@
   "path": "./",
   "table": "",
   "askForUser": true,
-  "askForPassword": true
+  "askForPassword": true,
+  "force": false
 }

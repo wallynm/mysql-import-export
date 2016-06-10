@@ -22,7 +22,6 @@ function Database(args) {
 		this.ask(method);
 		return this;
 	}
-				console.warn(this.args[0] === 'config')
 
 	// Update the config when the first arg is `config`
 	if (typeof this.args === 'object') {
@@ -103,7 +102,12 @@ Database.prototype.ask = function(method) {
 			name: 'table',
 			message: 'Tables (separeted by spaces - Empty for all):',
 			default : _.defaults.table
-		},		
+		},
+		{
+			name: 'force',
+			message: 'Ignore errors:',
+			default : _.defaults.table
+		},
 		{
 			name: 'path',
 			message: 'Where is the file you want to import?',
@@ -200,6 +204,7 @@ Database.prototype.parseArgs = function(args) {
 		args.password ? `-p${args.password}` : '',
 		`-h ${args.host}`,
 		isImport ? '' : '--single-transaction',
+		args.force ? '-f' : '',
 		args.database,
 		args.table,
 		isImport ? '<' : '>',
