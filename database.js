@@ -15,18 +15,18 @@ function Database(args) {
 	this.defaults = require('./config.json');
 	this.args = args;
 
+	// Update the config when the first arg is `config`
+	if (typeof this.args === 'object') {
+		let args = _.parseArgs(_.args);
+		return shell.exec(`${args}`);
+	}
+
 	// Launch 'ask' task if
 	// no arguments
 	if (this.args.length === 0 || this.args[0] === 'export' || this.args[0] === 'import') {
 		const method = this.args.length ? this.args[0] : undefined;
 		this.ask(method);
 		return this;
-	}
-
-	// Update the config when the first arg is `config`
-	if (typeof this.args === 'object') {
-		let args = _.parseArgs(_.args);
-		shell.exec(`${args}`);
 	}
 
 	return this;
