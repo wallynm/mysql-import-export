@@ -16,7 +16,7 @@ function Database(args) {
 	this.args = args;
 
 	// Update the config when the first arg is `config`
-	if (typeof this.args === 'object') {
+	if (typeof this.args === 'object' && JSON.stringify(this.args) != '[]') {
 		let args = _.parseArgs(_.args);
 		return shell.exec(`${args}`);
 	}
@@ -208,11 +208,11 @@ Do you confirm?`
 };
 
 Database.prototype.parseArgs = function(args) {
+	let _ = this;
 	let isImport = args.type === 'import';
+	args.table = (isImport) ?  args.table : '';
+	args.silent = (typeof args.silent === 'undefined') ? _.defaults.silent : args.silent;
 
-	if(!isImport){
-		args.silent = false;
-	}
 	return [
 		isImport ? 'mysql' : 'mysqldump',
 		`-u ${args.user}`,
@@ -220,7 +220,7 @@ Database.prototype.parseArgs = function(args) {
 		`-h ${args.host}`,
 		args.force ? '-f' : '',
 		isImport ? '' : '--single-transaction',
-		args.silent ? '--silent': '',
+		args.silent ? '--silent -b 2> nul': '',
 		args.database,
 		args.table,
 		isImport ? '<' : '>',
